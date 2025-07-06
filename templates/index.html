@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Webhook Events</title>
+  <script>
+    async function fetchEvents() {
+      const res = await fetch('/events');
+      const data = await res.json();
+      const container = document.getElementById("event-list");
+      container.innerHTML = "";
+      data.forEach(event => {
+        const date = new Date(event.timestamp).toUTCString();
+        let text = "";
+        if (event.event_type === "push") {
+          text = `${event.author} pushed to ${event.to_branch} on ${date}`;
+        } else if (event.event_type === "pull_request") {
+          text = `${event.author} submitted a pull request from ${event.from_branch} to ${event.to_branch} on ${date}`;
+        }
+        container.innerHTML += `<p>${text}</p>`;
+      });
+    }
+    setInterval(fetchEvents, 15000);
+    window.onload = fetchEvents;
+  </script>
+</head>
+<body>
+  <h1>GitHub Webhook Events</h1>
+  <div id="event-list"></div>
+</body>
+</html>'''
