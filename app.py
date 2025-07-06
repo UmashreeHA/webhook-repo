@@ -8,11 +8,9 @@ client = MongoClient("mongodb://localhost:27017/")
 db = client["webhooks"]
 collection = db["events"]
 
-
 @app.route("/", methods=["GET"])
 def home():
     return render_template("index.html")
-
 
 @app.route("/webhook", methods=["POST"])
 def webhook():
@@ -41,14 +39,12 @@ def webhook():
     collection.insert_one(event_doc)
     return jsonify({"message": "Received"}), 200
 
-
 @app.route("/events", methods=["GET"])
 def get_events():
     events = list(collection.find().sort("timestamp", -1).limit(10))
     for e in events:
         e["_id"] = str(e["_id"])
     return jsonify(events)
-
 
 if __name__ == "__main__":
     app.run(debug=True)

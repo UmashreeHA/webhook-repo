@@ -15,6 +15,8 @@
           text = `${event.author} pushed to ${event.to_branch} on ${date}`;
         } else if (event.event_type === "pull_request") {
           text = `${event.author} submitted a pull request from ${event.from_branch} to ${event.to_branch} on ${date}`;
+        } else if (event.event_type === "merge") {
+          text = `${event.author} merged branch ${event.from_branch} to ${event.to_branch} on ${date}`;
         }
         container.innerHTML += `<p>${text}</p>`;
       });
@@ -27,4 +29,4 @@
   <h1>GitHub Webhook Events</h1>
   <div id="event-list"></div>
 </body>
-</html>'''
+</html>
